@@ -3,6 +3,12 @@ const { validateEmail } = require('./utils');
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
+  name: {
+    type: String,
+    trim: true,
+    unique: true,
+    required: 'Name is required'
+  },
   email: {
     type: String,
     trim: true,
@@ -30,6 +36,9 @@ const userSchema = new Schema({
   createdBy: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "User"
+  }, 
+  active: {
+    type: Boolean,
   }
   
 }, {timestamps: true});

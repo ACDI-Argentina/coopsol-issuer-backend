@@ -7,8 +7,7 @@ class AuthController extends Controller {
   async login(req, res, next) {
     try {
       const result = await this.service.login({
-        ...req.body,
-        email: req.body.username
+        ...req.body
       });
       return res.json(result);
     } catch (err) {

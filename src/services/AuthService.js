@@ -4,11 +4,12 @@ const User = require("../models/User");
 const Service = require("./Service");
 const UnauthorizedError = require("../errors/UnauthorizedError");
 const DidiIssuerSdk = require("../libs/DidiIssuerSdk");
+const { Console } = require("console");
 
 const { DIDI_USER, DIDI_PASSWORD } = process.env;
 
 
-function hashPassword(password){
+function hashPassword(password) {
   return crypto.createHash("sha256").update(password, "utf8").digest("hex"); //TODO: add salt
 }
 
@@ -44,10 +45,17 @@ class AuthService extends Service {
       },
     }, process.env.JWT_SECRET, { expiresIn: "2h" });
 
-    const result = await new DidiIssuerSdk().auth().login({ //TODO: Crear usuarios en el issuer backend
-      name: DIDI_USER,
-      password: DIDI_PASSWORD,
-    });
+    let tokenDidi;
+    try {
+      const result = await new DidiIssuerSdk().auth().login({ //TODO: Crear usuarios en el issuer backend
+        name: DIDI_USER,
+        password: DIDI_PASSWORD,
+      });
+      tokenDidi = result?.token;
+    } catch (error) {
+      console.log(`Error login on didi issuer with credentials: ${DIDI_USER}, ${DIDI_PASSWORD}`)
+      console.log(error);
+    }
 
     return {
       user: {
@@ -56,7 +64,7 @@ class AuthService extends Service {
         roles: user.roles,
       },
       token,
-      tokenDidi: result?.token
+      tokenDidi: tokenDidi
     };
   }
 
