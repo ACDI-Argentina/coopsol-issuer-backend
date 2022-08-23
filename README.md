@@ -20,4 +20,4 @@ DIDI_PASSWORD
 `npm start`
 
 
-También este componente se encuentra disponible en [docker hub] (https://hub.docker.com/repository/docker/didicoopsol/issuer-backend)
+También este componente se encuentra disponible en [Docker Hub](https://hub.docker.com/repository/docker/didicoopsol/issuer-backend)
